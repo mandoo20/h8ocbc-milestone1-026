@@ -3,6 +3,7 @@ This is the direktor module and supports all the REST actions for the
 direktor data
 """
 
+from operator import ge
 from flask import make_response, abort
 from config import db
 from models import Director, DirectorSchema, Movie
@@ -80,6 +81,21 @@ def read_one(director_id):
     # Otherwise, nope, didn't find that person
     else:
         abort(404, f"Director not found for Id: {director_id}")
+
+def read_all_filter_by_gender(gender):
+    """
+    This function responds to a request for /api/director
+    with the complete lists of director
+
+    :return:        json string of list of director
+    """
+    # Create the list of people from our data
+    director = Director.query.filter(Director.gender == gender).order_by(Director.name).limit(50)
+
+    # Serialize the data for the response
+    director_schema = DirectorSchema(many=True)
+    data = director_schema.dump(director)
+    return data
 
 def create(person):
     """

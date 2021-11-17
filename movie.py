@@ -44,13 +44,62 @@ def read_all_pagination(page,per_page):
 
     # get max page to return to View
     max_page = math.ceil(n/per_page)
-    
+
     #append to data list for response to view
     mp = {
         'Max_Page': max_page
     }
     data.append(mp)
     return data
+
+def read_all_sort_by_popularity():
+    """
+    This function responds to a request for /api/movie
+    with the complete lists of movie sort by popularity
+
+    :return:        json string of list of movie
+    """
+    # Create the list of people from our data
+    movies = Movie.query.order_by(Movie.popularity.desc()).limit(50)
+
+    # Serialize the data for the response
+    movie_schema = MovieSchema(many=True)
+    data = movie_schema.dump(movies)
+    return data
+
+def read_all_sort_by_vote_average():
+    """
+    This function responds to a request for /api/movie
+    with the complete lists of movie sort by vote average
+
+    :return:        json string of list of movie
+    """
+    # Create the list of people from our data
+    movies = Movie.query.order_by(Movie.vote_average.desc()).limit(50)
+
+    # Serialize the data for the response
+    movie_schema = MovieSchema(many=True)
+    data = movie_schema.dump(movies)
+    return data
+
+def read_between_date(start,end):
+    """
+    This function responds to a request for /api/movie
+    with the lists of movie view between inputted date of release_date
+
+    :start:         start date want to view
+    :end:           end date want to view
+    :return:        json string of list of movie
+    """
+    # Create the list of people from our data
+    movies = Movie.query.filter(Movie.release_date.between(start,end)).order_by(Movie.release_date)
+
+    # Serialize the data for the response
+    movie_schema = MovieSchema(many=True)
+    data = movie_schema.dump(movies)
+    return data
+
+
 
 def read_one(director_id,movie_id):
     """
