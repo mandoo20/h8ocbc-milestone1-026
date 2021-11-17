@@ -66,7 +66,6 @@ def read_one(director_id):
     # Build the initial query
     person = (
         Director.query.filter(Director.id == director_id)
-        .outerjoin(Movie)
         .one_or_none()
     )
 
