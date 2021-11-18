@@ -95,3 +95,4 @@ class MovieDirectorSchema(ma.SQLAlchemyAutoSchema):
     gender = fields.Int()
     uid = fields.Int()
     department = fields.Str()
+    movies= fields.Str()
